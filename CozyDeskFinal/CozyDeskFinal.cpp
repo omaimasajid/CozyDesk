@@ -7,7 +7,7 @@
 #include <Qlistwidget>
 #include <QFileInfo>
 #include <QFile>
-
+#include <QWidget.h>
 
 CozyDeskFinal::CozyDeskFinal(QWidget* parent)
     : QMainWindow(parent)
@@ -17,7 +17,7 @@ CozyDeskFinal::CozyDeskFinal(QWidget* parent)
     QFile file("style.qss");
     file.open(QFile::ReadOnly);
     setStyleSheet(QString(file.readAll()));
-    setFixedSize(1080, 720);
+  
 
     // background
 
@@ -150,6 +150,9 @@ CozyDeskFinal::CozyDeskFinal(QWidget* parent)
     alarmPlayer->setAudioOutput(alarmOutput);
 
     PT = new PomodoroTimer(this);
+    notif = new QSystemTrayIcon(this);
+    notif->setIcon(style()->standardIcon(QStyle::SP_MessageBoxInformation));
+    notif->show();
 
     connect(ui.startTime, &QPushButton::clicked, this, [this]() {
         int mins = ui.timerSet->time().minute();
@@ -167,6 +170,7 @@ CozyDeskFinal::CozyDeskFinal(QWidget* parent)
         ui.sessionLabel->setText("Done!!");
         alarmPlayer->setSource(QUrl("qrc:/sound/alarm.wav"));
         alarmPlayer->play();
+        notif->showMessage("Cozy desk", "Timer done!", QSystemTrayIcon::Information, 3000);
         });
 
     connect(ui.pauseTime, &QPushButton::clicked, this, [this]() {
@@ -183,8 +187,13 @@ CozyDeskFinal::CozyDeskFinal(QWidget* parent)
         ui.timeLabel->setText(t);
         });
 
+    connect(notif, &QSystemTrayIcon::messageClicked, this, [this]() {
+        showNormal();
+        raise();
+        activateWindow();
+        });
 
-
+    
 
     //notes 
 

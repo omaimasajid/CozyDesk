@@ -5,7 +5,7 @@
 #include "MusicPlayer.h"
 #include "PomodoroTimer.h"
 #include "Notes.h"
-
+#include <qsystemtrayicon.h>
 
 class CozyDeskFinal : public QMainWindow
 {
@@ -23,6 +23,7 @@ private:
     Notes* notes;
     QMediaPlayer* alarmPlayer;
     QAudioOutput* alarmOutput;
+    QSystemTrayIcon* notif;
     bool repeatOn;
 };
 

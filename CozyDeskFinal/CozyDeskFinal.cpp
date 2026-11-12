@@ -170,7 +170,10 @@ CozyDeskFinal::CozyDeskFinal(QWidget* parent)
         ui.sessionLabel->setText("Done!!");
         alarmPlayer->setSource(QUrl("qrc:/sound/alarm.wav"));
         alarmPlayer->play();
-        notif->showMessage("Cozy desk", "Timer done!", QSystemTrayIcon::Information, 3000);
+        if(ui.workRadio->isChecked())
+        notif->showMessage("Cozy desk", "Work time over! Time to relax :)", QSystemTrayIcon::Information, 3000);
+        else if(ui.breakRadio->isChecked())
+        notif->showMessage("Cozy desk", "Break time over! Time to get back to work..", QSystemTrayIcon::Information, 3000);
         });
 
     connect(ui.pauseTime, &QPushButton::clicked, this, [this]() {
